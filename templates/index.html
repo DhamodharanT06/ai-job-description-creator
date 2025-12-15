@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Job Description Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-red': '#8E1616',
+                        'soft-gold': '#E8C999',
+                        'light-cream': '#F8EEDF',
+                        'dark-text': '#000000',
+                        'card-bg': 'rgba(232, 201, 153, 0.8)',
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'gradient': 'gradient 8s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'wave': 'wave 20s ease-in-out infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.6s ease forwards',
+                        'fade-in': 'fadeIn 0.6s ease forwards',
+                    },
+                    keyframes: {
+                        gradient: {
+                            '0%, 100%': { 'background-position': '0% 50%' },
+                            '50%': { 'background-position': '100% 50%' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        glow: {
+                            'from': { 'box-shadow': '0 0 20px #8E1616' },
+                            'to': { 'box-shadow': '0 0 30px #8E1616, 0 0 40px #8E1616' }
+                        },
+                        slideUp: {
+                            'from': {
+                                opacity: '0',
+                                transform: 'translateY(30px)'
+                            },
+                            'to': {
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            }
+                        },
+                        fadeIn: {
+                            'from': { opacity: '0' },
+                            'to': { opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px #A2D5C6; }
+            to { box-shadow: 0 0 30px #A2D5C6, 0 0 40px #A2D5C6; }
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #000000, #8E1616, #E8C999);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 3s ease infinite;
+        }
+        
+        .glassmorphism {
+            background: rgba(248, 238, 223, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(232, 201, 153, 0.3);
+        }
+        
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: linear-gradient(45deg, #8E1616, #E8C999);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .wave-bg {
+            background: linear-gradient(45deg, #F8EEDF, #E8C999, #8E1616);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+    </style>
+</head>
+<body class="wave-bg min-h-screen text-dark-text overflow-x-hidden">
+    <!-- Floating Particles Background -->
+    <div class="floating-particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 2.5s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 4.5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 1.5s;"></div>
+    </div>
+
+
+    <div id="navbar"></div>
+    <script>
+    // Load Navbar
+    fetch("{{ url_for('navbar') }}")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+        // Initialize mobile menu after navbar is loaded
+        initializeMobileMenu();
+      });
+    </script>
+    
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center px-6">
+        <div class="container mx-auto text-center space-y-8">
+            <div class="space-y-6" data-aos="fade-up">
+                <h1 class="text-5xl md:text-7xl font-black leading-tight">
+                    Generate <span class="gradient-text">Job Descriptions</span><br>
+                    in Seconds with <span class="gradient-text">AI</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+                    Transform your hiring process with our cutting-edge AI technology. Create professional, 
+                    compelling job descriptions that attract top talent effortlessly.
+                </p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center" data-aos="fade-up" data-aos-delay="200">
+                <a href="{{ url_for('generator') }}" 
+                   class="group w-full sm:w-auto bg-gradient-to-r from-primary-red to-soft-gold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl text-base sm:text-lg font-semibold text-white hover:shadow-2xl hover:shadow-primary-red/30 transition-all duration-500 hover:-translate-y-1 animate-glow text-center">
+                    <span class="flex items-center justify-center space-x-3">
+                        <span>Try Now</span>
+                        <i class="fas fa-rocket text-lg sm:text-xl group-hover:animate-bounce"></i>
+                    </span>
+                </a>
+                <button class="w-full sm:w-auto glassmorphism px-6 sm:px-8 py-3 sm:py-4 rounded-2xl text-base sm:text-lg font-semibold hover:bg-soft-gold/20 transition-all duration-300">
+                    <span class="flex items-center justify-center space-x-3">
+                        <i class="fas fa-play text-primary-red"></i>
+                        <span>Watch Demo</span>
+                    </span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Animated 3D Elements -->
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-1/4 left-10 w-32 h-32 bg-gradient-to-r from-primary-red/20 to-soft-gold/20 rounded-full blur-xl animate-float"></div>
+            <div class="absolute bottom-1/4 right-10 w-48 h-48 bg-gradient-to-r from-soft-gold/20 to-primary-red/20 rounded-full blur-xl animate-float" style="animation-delay: 2s;"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-primary-red/10 to-soft-gold/10 rounded-full blur-2xl animate-pulse"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-6">
+        <div class="container mx-auto">
+            <div class="text-center space-y-6 mb-16" data-aos="fade-up">
+                <h2 class="text-4xl md:text-6xl font-bold">
+                    Why Choose <span class="gradient-text">AI JobGen</span>?
+                </h2>
+                <p class="text-xl text-gray-700 max-w-2xl mx-auto">
+                    Experience the future of recruitment with our advanced AI-powered platform
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-light-cream/20 backdrop-blur-lg border border-soft-gold/30 rounded-2xl p-8 hover:bg-light-cream/30 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 bg-gradient-to-r from-primary-red to-soft-gold rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-lightning-bolt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Lightning Fast</h3>
+                    <p class="text-gray-700">Generate professional job descriptions in seconds, not hours. Our AI processes your requirements instantly.</p>
+                </div>
+                
+                <div class="bg-light-cream/20 backdrop-blur-lg border border-soft-gold/30 rounded-2xl p-8 hover:bg-light-cream/30 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 bg-gradient-to-r from-soft-gold to-primary-red rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-brain text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">AI Powered</h3>
+                    <p class="text-gray-700">Leverage cutting-edge artificial intelligence to create compelling, accurate job descriptions that attract top talent.</p>
+                </div>
+                
+                <div class="bg-light-cream/20 backdrop-blur-lg border border-soft-gold/30 rounded-2xl p-8 hover:bg-light-cream/30 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 bg-gradient-to-r from-soft-gold to-primary-red rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Mobile Ready</h3>
+                    <p class="text-gray-700">Access our platform from anywhere. Fully responsive design that works perfectly on all devices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-6">
+        <div class="container mx-auto text-center">
+            <div class="glassmorphism rounded-3xl p-12 max-w-4xl mx-auto" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                    Ready to <span class="gradient-text">Transform</span> Your Hiring?
+                </h2>
+                <p class="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+                    Join thousands of companies already using AI JobGen to streamline their recruitment process.
+                </p>
+                <a href="{{ url_for('generator') }}" 
+                   class="inline-block w-full sm:w-auto bg-gradient-to-r from-primary-red to-soft-gold px-8 sm:px-10 py-3 sm:py-4 rounded-2xl text-lg sm:text-xl font-semibold text-white hover:shadow-2xl hover:shadow-primary-red/30 transition-all duration-500 hover:-translate-y-1 animate-glow text-center">
+                    Start Generating Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer"></div>
+
+     <script>
+       fetch("{{ url_for('footer') }}")
+       .then(response => response.text())
+       .then(data => {
+         document.getElementById("footer").innerHTML = data;
+       })
+       .catch(err => console.error("Footer load failed:", err));
+    </script>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

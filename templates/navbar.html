@@ -1,0 +1,34 @@
+ <!-- Navigation -->
+    <nav class="relative z-50 glassmorphism">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary-red to-soft-gold rounded-lg flex items-center justify-center">
+                        <i class="fas fa-robot text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text">AI JobGen</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{{ url_for('home') }}" class="hover:text-primary-red transition-colors duration-300">Home</a>
+                    <a href="{{ url_for('generator') }}" class="bg-gradient-to-r from-primary-red to-soft-gold px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-sm sm:text-base text-white hover:shadow-lg hover:shadow-primary-red/25 transition-all duration-300">
+                        Try Now
+                    </a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-dark-text hover:text-primary-red transition-colors duration-300">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glassmorphism border-t border-soft-gold/30">
+            <div class="container mx-auto px-6 py-4 space-y-3">
+                <a href="{{ url_for('home') }}" class="block hover:text-primary-red transition-colors duration-300 py-3 text-lg font-medium border-b border-soft-gold/20 last:border-b-0">Home</a>
+                <a href="{{ url_for('generator') }}" class="inline-block bg-gradient-to-r from-primary-red to-soft-gold px-4 py-2.5 rounded-full text-center text-white hover:shadow-lg hover:shadow-primary-red/25 transition-all duration-300 font-semibold text-sm">
+                    Try Now
+                </a>
+            </div>
+        </div>
+    </nav>
