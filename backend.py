@@ -1,9 +1,6 @@
 from flask import Flask, render_template, request, jsonify, Response
 import requests
 import time
-import smtplib
-from email.mime.text import MIMEText
-from email.utils import formataddr
 import os
 from dotenv import load_dotenv
 from io import BytesIO
@@ -15,7 +12,7 @@ from reportlab.lib.utils import simpleSplit
 load_dotenv()
 app = Flask(__name__)
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
-OPENROUTER_MODEL = os.getenv('OPENROUTER_MODEL', 'google/gemini-2.0-flash-exp:free')
+OPENROUTER_MODEL = os.getenv('OPENROUTER_MODEL', 'meta-llama/llama-3.3-70b-instruct:free')
 # Allow overriding the base API URL (useful for proxies or private networks)
 OPENROUTER_BASE_URL = os.getenv('OPENROUTER_BASE_URL', 'https://openrouter.ai/api')
 openrouter_init_error = None
@@ -229,52 +226,6 @@ IMPORTANT: Use PLAIN TEXT only. Do NOT use markdown formatting, asterisks, or sp
 
 
     return jsonify(out)
-
-
-@app.route('/send_application', methods=['POST'])
-def send_application():
-    """Send application email to provided recipient using SMTP settings from env.
-
-    Expects JSON: { to: email, subject: str, body: str, applicantName?: str, applicantEmail?: str }
-    """
-    data = request.json or {}
-    to_addr = data.get('to')
-    subject = data.get('subject', 'Job Application')
-    body = data.get('body', '')
-    applicant_name = data.get('applicantName', '')
-    applicant_email = data.get('applicantEmail', '')
-
-    if not to_addr:
-        return jsonify(success=False, error='Missing recipient email'), 400
-
-    SMTP_HOST = os.getenv('SMTP_HOST')
-    SMTP_PORT = int(os.getenv('SMTP_PORT', '587'))
-    SMTP_USER = os.getenv('SMTP_USER')
-    SMTP_PASS = os.getenv('SMTP_PASS')
-    SMTP_FROM = os.getenv('SMTP_FROM') or SMTP_USER
-
-    if not SMTP_HOST or not SMTP_USER or not SMTP_PASS:
-        return jsonify(success=False, error='SMTP not configured on server'), 500
-
-    # Build message
-    msg = MIMEText(body, 'html')
-    msg['Subject'] = subject
-    msg['From'] = formataddr((os.getenv('SMTP_FROM_NAME') or 'Job Portal', SMTP_FROM))
-    msg['To'] = to_addr
-    # add reply-to if applicant provided
-    if applicant_email:
-        msg['Reply-To'] = applicant_email
-
-    try:
-        server = smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=20)
-        server.starttls()
-        server.login(SMTP_USER, SMTP_PASS)
-        server.sendmail(SMTP_FROM, [to_addr], msg.as_string())
-        server.quit()
-        return jsonify(success=True)
-    except Exception as e:
-        print('SMTP send failed:', e)
-        return jsonify(success=False, error=str(e)), 500
 
 def get_experience_label(level):
     """Convert experience level to readable format"""
