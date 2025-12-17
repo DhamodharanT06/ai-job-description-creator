@@ -2,14 +2,18 @@ from flask import Flask, render_template, request, jsonify, Response
 import requests
 import time
 import os
-from dotenv import load_dotenv
 from io import BytesIO
 from flask import send_file
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import simpleSplit
 
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except:
+    pass
+
 app = Flask(__name__)
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 OPENROUTER_MODEL = os.getenv('OPENROUTER_MODEL', 'meta-llama/llama-3.3-70b-instruct:free')
@@ -46,6 +50,31 @@ def generate():
     for f in ('jobTitle','companyName','city','state','jobType','experienceLevel','salary','companyEmail'):
         if not data.get(f):
             return jsonify(success=False,error=f"Missing {f}")
+
+    # Quick debug override: if caller passes ?force_local=1, skip external API
+    if request.args.get('force_local', '').lower() in ('1', 'true'):
+        jd = generate_local_job_description(data)
+        out = {
+            'success': True,
+            'jobDescription': jd,
+            'jobDetails': {
+                'title': (data.get('jobTitle') or '').title(),
+                'company': (data.get('companyName') or '').title(),
+                'location': f"{(data.get('city') or '').title()}, {(data.get('state') or '').title()}",
+                'jobType': (data.get('jobType') or '').replace('-', ' ').title(),
+                'experienceLevel': get_experience_label(data.get('experienceLevel', '')),
+                'salary': (data.get('salary') or ''),
+                'email': data.get('companyEmail') or ''
+            },
+            'metadata': {
+                'wordCount': len(jd.split()),
+                'fallbackUsed': True,
+                'modelAvailable': False,
+                'apiAttempted': False,
+                'apiError': 'force_local'
+            }
+        }
+        return jsonify(out)
     prompt = f"""Create a professional job description in PLAIN TEXT format (no markdown, no asterisks, no bold markers).
 
 Job Details:
@@ -99,7 +128,7 @@ IMPORTANT: Use PLAIN TEXT only. Do NOT use markdown formatting, asterisks, or sp
             headers = {
                 'Authorization': f'Bearer {OPENROUTER_API_KEY}',
                 'Content-Type': 'application/json',
-                'HTTP-Referer': 'http://localhost:5000',
+                'HTTP-Referer':  os.getenv('VERCEL_URL', 'https://vercel.app'),
                 'X-Title': 'AI Job Description Generator'
             }
             payload = {
@@ -590,16 +619,3 @@ def favicon():
         <text x="36" y="36" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#1F2937">JD</text>
     </svg>'''
     return Response(svg, mimetype='image/svg+xml')
-
-if __name__ == "__main__":
-    print("=" * 60)
-    print("AI Job Description Generator")
-    print("=" * 60)
-    print(f"OpenRouter API Key: {'✓ Set' if OPENROUTER_API_KEY else '✗ Missing'}")
-    print(f"Model: {OPENROUTER_MODEL}")
-    print(f"Base URL: {OPENROUTER_BASE_URL}")
-    print("=" * 60)
-    print("Starting server at http://127.0.0.1:5000")
-    print("Diagnostics: http://127.0.0.1:5000/diag")
-    print("=" * 60)
-    app.run(debug=True)
