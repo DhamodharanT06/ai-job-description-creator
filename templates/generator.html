@@ -187,7 +187,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                 <!-- Form Section -->
-                <div class="space-y-8">
+                <div class="space-y-8 h-full">
                     <!-- Job Details Section -->
                     <div class="relative rounded-3xl p-10 animate-slide-up backdrop-blur-xl border border-soft-gold/30" style="background: linear-gradient(135deg, rgba(248, 238, 223, 0.2), rgba(232, 201, 153, 0.1)); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(232, 201, 153, 0.2) inset;">
                         <div class="mb-8">
@@ -368,7 +368,7 @@
                                      placeholder=" "
                                      rows="4"
                                      class="peer w-full px-6 py-4 rounded-xl text-dark-text placeholder-gray-500 text-lg font-normal resize-none transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
-                                     style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
+                                     style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif; white-space: pre-wrap; overflow-wrap: break-word;"
                                     >
                                 </textarea>
                                 <label for="additionalDetails" 
@@ -400,7 +400,7 @@
                 </div>
 
                 <!-- Output Section -->
-                <div class="space-y-8">
+                <div class="space-y-8 overflow-y-auto pr-4 h-full" style="scrollbar-width: thin; scrollbar-color: rgba(142, 22, 22, 0.3) transparent;">
                     <!-- Loading State -->
                     <div id="loading-state" class="hidden glassmorphism rounded-3xl p-8 text-center">
                         <div class="space-y-6">

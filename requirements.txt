@@ -1,5 +1,4 @@
-Flask
+flask
 python-dotenv
 reportlab
 requests
-

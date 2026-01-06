@@ -617,14 +617,4 @@ def favicon():
     return Response(svg, mimetype='image/svg+xml')
 
 if __name__ == "__main__":
-    print("=" * 60)
-    print("AI Job Description Generator")
-    print("=" * 60)
-    print(f"OpenRouter API Key: {'✓ Set' if OPENROUTER_API_KEY else '✗ Missing'}")
-    print(f"Model: {OPENROUTER_MODEL}")
-    print(f"Base URL: {OPENROUTER_BASE_URL}")
-    print("=" * 60)
-    print("Starting server at http://127.0.0.1:5000")
-    print("Diagnostics: http://127.0.0.1:5000/diag")
-    print("=" * 60)
     app.run(debug=True)

@@ -157,6 +157,13 @@ function initializeJobGenerator() {
         const formData = new FormData(form);
         const jobData = Object.fromEntries(formData);
         
+        // Trim all string values to remove leading/trailing spaces
+        for (let key in jobData) {
+            if (typeof jobData[key] === 'string') {
+                jobData[key] = jobData[key].trim();
+            }
+        }
+        
         // Validate required fields
         if (!validateForm(jobData)) {
             showToast('Please fill in all required fields', 'error');
