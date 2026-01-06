@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, Response
+from flask import Flask, render_template, request, jsonify, Response, send_from_directory
 import requests
 import time
 import os
@@ -38,6 +38,13 @@ def navbar():
 @app.route("/footer.html")
 def footer():
     return render_template("footer.html")
+
+
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    # Serve static assets explicitly so deployments that route requests to the Flask app
+    # (instead of a platform static handler) still return files like JS/CSS.
+    return send_from_directory(os.path.join(app.root_path, 'static'), filename)
 
 @app.route("/generate", methods=["POST"])
 def generate():
@@ -646,4 +653,13 @@ def favicon():
     return Response(svg, mimetype='image/svg+xml')
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Use PORT from environment (Vercel provides this) and bind to 0.0.0.0
+    try:
+        port = int(os.environ.get('PORT', 5000))
+        app.run(host='0.0.0.0', port=port, debug=True)
+    except Exception as e:
+        # Print full traceback to logs so Vercel shows details for debugging
+        import traceback
+        traceback.print_exc()
+        print('Failed to start Flask app:', e)
+        raise

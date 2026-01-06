@@ -9,96 +9,96 @@ A Flask-based web application that generates professional job descriptions using
 - 🎨 Modern, responsive UI with smooth animations
 - ✅ Form validation and error handling
 - 🔍 Built-in diagnostics for troubleshooting
+## AI Job Description Generator
 
-## Quick Setup
+A small Flask web app that generates job descriptions. This project is already configured to deploy on Vercel using the `@vercel/python` builder (`vercel.json` included).
 
-### 1. Install Dependencies
+Quick checklist
+
+- Install dependencies locally: `pip install -r requirements.txt`
+- Copy `.env.example` → `.env` for local testing and fill `OPENROUTER_API_KEY`
+- Deploy to Vercel (instructions below)
+
+Local development
+
+1. Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure API Key
+2. Copy the example env and add your key:
 
-1. Copy `.env.example` to `.env`:
-   ```bash
-   copy .env.example .env
-   ```
+Windows PowerShell:
 
-2. Get your OpenRouter API key from [openrouter.ai/keys](https://openrouter.ai/keys)
+```powershell
+Copy-Item .env.example .env
+```
 
-3. Edit `.env` and add your key:
-   ```
-   OPENROUTER_API_KEY=sk-or-v1-YOUR_API_KEY_HERE
-   ```
-
-### 3. Run the Application
+macOS / Linux:
 
 ```bash
-python backend.py
+cp .env.example .env
 ```
 
-Visit: http://127.0.0.1:5000
+3. Run the app locally:
 
-## Troubleshooting
-
-### API Not Working?
-
-Visit the diagnostics page: http://127.0.0.1:5000/diag
-
-This will test:
-- DNS resolution for api.openrouter.ai
-- HTTPS connectivity
-- API key validity
-- Network configuration
-
-### Common Issues
-
-**502 Error / API Connection Fails:**
-- Check your API key is set correctly in `.env`
-- Ensure you have internet connectivity
-- If behind a corporate firewall, set proxy in `.env`:
-  ```
-  HTTPS_PROXY=http://proxy.company.com:8080
-  ```
-
-**Text Not Visible in Forms:**
-- Fixed! All text is now black regardless of autofill
-
-**No API Key:**
-- Get one free at [openrouter.ai](https://openrouter.ai)
-- Some models require credits, but many are free-tier
-
-## Project Structure
-
-```
-AIJobDC/
-├── backend.py              # Flask server & API integration
-├── requirements.txt        # Python dependencies
-├── .env                    # Your API keys (create from .env.example)
-├── static/
-│   └── js/
-│       ├── generator.js    # Job generator UI logic
-│       └── main.js         # Homepage interactions
-└── templates/
-    ├── index.html          # Landing page
-    ├── generator.html      # Job generator form
-    ├── navbar.html         # Navigation component
-    └── footer.html         # Footer component
+```bash
+python app.py
 ```
 
-## API Models
+Then open http://127.0.0.1:5000
 
-Default: `openai/gpt-4o-mini` (fast, cheap, good quality)
+Notes about environment variables
 
-Other options (change in `.env`):
-- `anthropic/claude-3.5-sonnet` - Best quality
-- `google/gemini-pro` - Google's model
-- `meta-llama/llama-3.1-8b-instruct` - Open source
+- The app reads `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` and `OPENROUTER_BASE_URL` from the environment (or a local `.env` when present).
+- For production on Vercel, do NOT commit `.env`. Add environment variables securely in the Vercel dashboard or via the Vercel CLI (see below).
 
-See all models: https://openrouter.ai/models
+Deploying to Vercel
 
-## Support
+This repository already includes `vercel.json` configured to use `app.py` as the Python entrypoint. To deploy:
 
-For issues or questions, check the diagnostics endpoint first:
-http://127.0.0.1:5000/diag
+1. Install the Vercel CLI (if needed):
+
+```bash
+npm i -g vercel
+# or
+pnpm add -g vercel
+```
+
+2. Log in and link the project:
+
+```bash
+vercel login
+vercel link
+```
+
+3. Add required environment variables for production. Recommended approach is via the Vercel CLI:
+
+```bash
+vercel env add OPENROUTER_API_KEY production
+vercel env add OPENROUTER_MODEL production    # optional
+vercel env add OPENROUTER_BASE_URL production # optional
+```
+
+When prompted, paste the values. Alternatively, set them in the Vercel dashboard under Project → Settings → Environment Variables.
+
+4. Deploy:
+
+```bash
+vercel --prod
+```
+
+Notes and troubleshooting
+
+- `vercel.json` routes `/static/*` to the `static` folder and sends all other requests to `app.py`.
+- The app uses `python-dotenv` for local development. In Vercel production the environment variables come from the platform and `python-dotenv` will be skipped.
+- If your AI calls fail in production, confirm `OPENROUTER_API_KEY` is set in Vercel and that your model name in `OPENROUTER_MODEL` is valid.
+
+If you want, I can also:
+
+- Add a small `Makefile` or PowerShell script for local runs
+- Add GitHub Actions to automatically deploy on push
+
+---
+Updated to ensure the repository is ready for simple Vercel deployment.
