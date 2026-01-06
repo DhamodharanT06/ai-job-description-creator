@@ -2,14 +2,18 @@ from flask import Flask, render_template, request, jsonify, Response
 import requests
 import time
 import os
-from dotenv import load_dotenv
 from io import BytesIO
 from flask import send_file
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.utils import simpleSplit
 
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except:
+    pass
+
 app = Flask(__name__)
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 OPENROUTER_MODEL = os.getenv('OPENROUTER_MODEL', 'meta-llama/llama-3.3-70b-instruct:free')
@@ -46,6 +50,31 @@ def generate():
     for f in ('jobTitle','companyName','city','state','jobType','experienceLevel','salary','companyEmail'):
         if not data.get(f):
             return jsonify(success=False,error=f"Missing {f}")
+
+    # Quick debug override: if caller passes ?force_local=1, skip external API
+    if request.args.get('force_local', '').lower() in ('1', 'true'):
+        jd = generate_local_job_description(data)
+        out = {
+            'success': True,
+            'jobDescription': jd,
+            'jobDetails': {
+                'title': (data.get('jobTitle') or '').title(),
+                'company': (data.get('companyName') or '').title(),
+                'location': f"{(data.get('city') or '').title()}, {(data.get('state') or '').title()}",
+                'jobType': (data.get('jobType') or '').replace('-', ' ').title(),
+                'experienceLevel': get_experience_label(data.get('experienceLevel', '')),
+                'salary': (data.get('salary') or ''),
+                'email': data.get('companyEmail') or ''
+            },
+            'metadata': {
+                'wordCount': len(jd.split()),
+                'fallbackUsed': True,
+                'modelAvailable': False,
+                'apiAttempted': False,
+                'apiError': 'force_local'
+            }
+        }
+        return jsonify(out)
 
     # Quick debug override: if caller passes ?force_local=1, skip external API
     if request.args.get('force_local', '').lower() in ('1', 'true'):
@@ -124,7 +153,7 @@ IMPORTANT: Use PLAIN TEXT only. Do NOT use markdown formatting, asterisks, or sp
             headers = {
                 'Authorization': f'Bearer {OPENROUTER_API_KEY}',
                 'Content-Type': 'application/json',
-                'HTTP-Referer': 'http://localhost:5000',
+                'HTTP-Referer':  os.getenv('VERCEL_URL', 'https://vercel.app'),
                 'X-Title': 'AI Job Description Generator'
             }
             payload = {
