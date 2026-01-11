@@ -160,7 +160,6 @@ IMPORTANT: Use PLAIN TEXT only. Do NOT use markdown formatting, asterisks, or sp
             headers = {
                 'Authorization': f'Bearer {OPENROUTER_API_KEY}',
                 'Content-Type': 'application/json',
-                'HTTP-Referer':  os.getenv('VERCEL_URL', 'https://vercel.app'),
                 'X-Title': 'AI Job Description Generator'
             }
             payload = {
