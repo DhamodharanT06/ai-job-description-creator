@@ -48,12 +48,7 @@ def static_files(filename):
 
 @app.route("/generate", methods=["POST"])
 def generate():
-    import traceback
-    try:
-        data = request.get_json(silent=True) or {}
-        print('[generate] request headers:', dict(request.headers))
-        print('[generate] request args:', dict(request.args))
-        print('[generate] request json keys:', list(data.keys()))
+    data = request.json or {}
     # Strip leading/trailing spaces from all text fields
     for key in data:
         if isinstance(data[key], str):
@@ -289,14 +284,8 @@ IMPORTANT: Use PLAIN TEXT only. Do NOT use markdown formatting, asterisks, or sp
         }
     }
 
-    try:
-        return jsonify(out)
-    except Exception as e:
-        # Log full traceback to server logs (do NOT expose secrets)
-        tb = traceback.format_exc()
-        print('[generate] Exception:', str(e))
-        print(tb)
-        return jsonify(success=False, error='Internal server error'), 500
+
+    return jsonify(out)
 
 def get_experience_label(level):
     """Convert experience level to readable format"""
