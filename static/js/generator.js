@@ -3,19 +3,43 @@
 let currentJobDetails = null;
 let currentJobDescription = '';
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initializeFormAnimations();
     initializeJobGenerator();
     initializeTooltips();
     initializeInputEffects();
+
+    // Initialize height adjustment
+    adjustRightColumnHeight();
+    window.addEventListener('resize', adjustRightColumnHeight);
+
     // Don't initialize mobile menu here - it will be called after navbar loads
 });
+
+function adjustRightColumnHeight() {
+    const leftCard = document.getElementById('left-card');
+    const rightColumn = document.getElementById('right-column');
+
+    if (!leftCard || !rightColumn) return;
+
+    // Check if we are on desktop (md breakpoint is usually 768px in Tailwind)
+    if (window.innerWidth >= 768) {
+        // Set right column height to match left card
+        // We use offsetHeight to get the full height including padding/borders
+        rightColumn.style.height = `${leftCard.offsetHeight}px`;
+        rightColumn.style.overflowY = 'auto'; // Ensure it scrolls if content is larger
+    } else {
+        // On mobile, let content flow naturally
+        rightColumn.style.height = 'auto';
+        rightColumn.style.overflowY = 'visible';
+    }
+}
 
 // Form animations and interactions
 function initializeFormAnimations() {
     const formElements = document.querySelectorAll('.slide-up');
     const slideInElements = document.querySelectorAll('.form-slide-in');
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
@@ -33,7 +57,7 @@ function initializeFormAnimations() {
         element.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
         observer.observe(element);
     });
-    
+
     // Animate form elements with staggered delay
     slideInElements.forEach((element, index) => {
         element.style.opacity = '0';
@@ -49,30 +73,30 @@ function initializeFormAnimations() {
 // Input focus effects
 function initializeInputEffects() {
     const inputs = document.querySelectorAll('input, textarea, select');
-    
+
     inputs.forEach(input => {
         // Focus effects with enhanced animations
-        input.addEventListener('focus', function() {
+        input.addEventListener('focus', function () {
             this.style.transform = 'scale(1.02)';
             this.style.boxShadow = '0 0 0 4px rgba(142, 22, 22, 0.1), 0 0 20px rgba(142, 22, 22, 0.3)';
-            
+
             // Add glow effect to parent container
             this.parentElement.style.transform = 'scale(1.01)';
             this.parentElement.style.filter = 'drop-shadow(0 4px 20px rgba(142, 22, 22, 0.2))';
         });
-        
-        input.addEventListener('blur', function() {
+
+        input.addEventListener('blur', function () {
             this.style.transform = 'scale(1)';
             this.style.boxShadow = 'none';
             this.parentElement.style.transform = 'scale(1)';
             this.parentElement.style.filter = 'none';
         });
-        
+
         // Enhanced typing animation with color transitions
-        input.addEventListener('input', function() {
+        input.addEventListener('input', function () {
             this.style.borderColor = '#8E1616';
             this.style.background = 'rgba(142, 22, 22, 0.1)';
-            
+
             // Create ripple effect
             const ripple = document.createElement('div');
             ripple.style.position = 'absolute';
@@ -85,16 +109,16 @@ function initializeInputEffects() {
             ripple.style.transform = 'translate(-50%, -50%)';
             ripple.style.pointerEvents = 'none';
             ripple.style.transition = 'all 0.6s ease';
-            
+
             this.parentElement.style.position = 'relative';
             this.parentElement.appendChild(ripple);
-            
+
             setTimeout(() => {
                 ripple.style.width = '100px';
                 ripple.style.height = '100px';
                 ripple.style.opacity = '0';
             }, 10);
-            
+
             setTimeout(() => {
                 if (ripple.parentNode) {
                     ripple.parentNode.removeChild(ripple);
@@ -103,16 +127,16 @@ function initializeInputEffects() {
                 this.style.background = 'rgba(248, 238, 223, 0.2)';
             }, 600);
         });
-        
+
         // Hover effects
-        input.addEventListener('mouseenter', function() {
+        input.addEventListener('mouseenter', function () {
             if (this !== document.activeElement) {
                 this.style.borderColor = 'rgba(142, 22, 22, 0.3)';
                 this.style.background = 'rgba(248, 238, 223, 0.25)';
             }
         });
-        
-        input.addEventListener('mouseleave', function() {
+
+        input.addEventListener('mouseleave', function () {
             if (this !== document.activeElement) {
                 this.style.borderColor = 'rgba(232, 201, 153, 0.3)';
                 this.style.background = 'rgba(248, 238, 223, 0.2)';
@@ -125,11 +149,11 @@ function initializeInputEffects() {
 function initializeMobileMenu() {
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
-    
+
     if (mobileMenuBtn && mobileMenu) {
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
-            
+
             const icon = mobileMenuBtn.querySelector('i');
             if (mobileMenu.classList.contains('hidden')) {
                 icon.classList.remove('fa-times');
@@ -149,71 +173,71 @@ function initializeJobGenerator() {
     const loadingState = document.getElementById('loading-state');
     const resultsSection = document.getElementById('results-section');
     const outputContainer = document.getElementById('job-description-output');
-    
-    form.addEventListener('submit', async function(e) {
+
+    form.addEventListener('submit', async function (e) {
         e.preventDefault();
-        
+
         // Get form data
         const formData = new FormData(form);
         const jobData = Object.fromEntries(formData);
-        
+
         // Trim all string values to remove leading/trailing spaces
         for (let key in jobData) {
             if (typeof jobData[key] === 'string') {
                 jobData[key] = jobData[key].trim();
             }
         }
-        
+
         // Validate required fields
         if (!validateForm(jobData)) {
             showToast('Please fill in all required fields', 'error');
             return;
         }
-        
+
         // Start generation process
         startGeneration();
-        
+
         try {
             // Generate AI-powered job description
             const formattedJobDescription = await generateJobDescription(jobData);
-            
+
             // Show results with enhanced formatting
             showResults(formattedJobDescription);
-            
+
         } catch (error) {
-            console.error('Error generating job description:', error);
-            
+            // console.error('Error generating job description:', error);
+
             // Show specific error message
             const errorMessage = error.message || 'Error generating job description. Please try again.';
             showToast(errorMessage, 'error');
             resetGenerationState();
-            
+
             // Show fallback content if needed
             if (error.message.includes('API') || error.message.includes('network')) {
                 showFallbackTemplate(jobData);
             }
         }
     });
-    
 
-    
+
+
     // Download functionality (server-side)
-    document.getElementById('download-btn').addEventListener('click', function() {
+    document.getElementById('download-btn').addEventListener('click', function () {
         downloadPdfBackend();
         animateButton(this);
     });
 
     // Preview functionality (open backend-generated PDF in new tab)
-    document.getElementById('preview-btn').addEventListener('click', function() {
+    document.getElementById('preview-btn').addEventListener('click', function () {
         previewPdfBackend();
         animateButton(this);
     });
-    
+
     // Regenerate functionality
-    document.getElementById('regenerate-btn').addEventListener('click', function() {
+    document.getElementById('regenerate-btn').addEventListener('click', function () {
         const formData = new FormData(form);
         const jobData = Object.fromEntries(formData);
-        
+
         startGeneration();
         generateJobDescription(jobData).then(showResults);
         animateButton(this);
@@ -233,17 +257,17 @@ function startGeneration() {
     const btnLoading = document.getElementById('btn-loading');
     const loadingState = document.getElementById('loading-state');
     const resultsSection = document.getElementById('results-section');
-    
+
     // Update button state
     generateBtn.disabled = true;
     btnText.classList.add('hidden');
     btnLoading.classList.remove('hidden');
-    
+
     // Show loading state
     resultsSection.classList.add('hidden');
     loadingState.classList.remove('hidden');
     loadingState.classList.add('fade-in');
-    
+
     // Scroll to loading area
     loadingState.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
@@ -254,7 +278,7 @@ function resetGenerationState() {
     const btnText = document.getElementById('btn-text');
     const btnLoading = document.getElementById('btn-loading');
     const loadingState = document.getElementById('loading-state');
-    
+
     generateBtn.disabled = false;
     btnText.classList.remove('hidden');
     btnLoading.classList.add('hidden');
@@ -265,7 +289,7 @@ function resetGenerationState() {
 // async function generateJobDescription(jobData) {
 //     // Simulate API processing delay
 //     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
 //     // Return formatted empty template for user to customize
 //     return formatJobDescriptionTemplate(jobData);
 // }
@@ -351,31 +375,39 @@ function showResults(content) {
     const loadingState = document.getElementById('loading-state');
     const resultsSection = document.getElementById('results-section');
     const outputContainer = document.getElementById('job-description-output');
-    
+
     // Hide loading
     loadingState.classList.add('hidden');
-    
+
     // Show results with animation
     resultsSection.classList.remove('hidden');
     resultsSection.classList.add('slide-up');
-    
+
     // Set content with enhanced formatting
     outputContainer.innerHTML = content;
     outputContainer.style.opacity = '0';
     outputContainer.style.transform = 'translateY(20px)';
-    
+
+    // Hide tips section
+    const tipsSection = document.getElementById('tips-section');
+    if (tipsSection) {
+        tipsSection.classList.add('hidden');
+    }
+
+
+
     // Animate each section with staggered delay
     setTimeout(() => {
         outputContainer.style.transition = 'all 0.6s ease';
         outputContainer.style.opacity = '1';
         outputContainer.style.transform = 'translateY(0)';
-        
+
         // Animate content elements with stagger
         const elements = outputContainer.querySelectorAll('div > div, h2, h3, p, ul');
         elements.forEach((element, index) => {
             element.style.opacity = '0';
             element.style.transform = 'translateY(20px)';
-            
+
             setTimeout(() => {
                 element.style.transition = 'all 0.4s ease';
                 element.style.opacity = '1';
@@ -383,16 +415,19 @@ function showResults(content) {
             }, index * 100);
         });
     }, 100);
-    
+
     // Reset button state
     resetGenerationState();
-    
+
     // Scroll to results with better timing
     setTimeout(() => {
         resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
+
         // Show success message
         showToast('Job description generated successfully!', 'success');
+
+        // Adjust height after content is fully visible and animated
+        adjustRightColumnHeight();
     }, 500);
 }
 
@@ -402,10 +437,10 @@ function showToast(message, type = 'success') {
     const toastMessage = document.getElementById('toast-message');
     const toastContainer = toast.querySelector('div');
     const iconElement = toastContainer.querySelector('i');
-    
+
     toastMessage.textContent = message;
     toast.classList.remove('hidden');
-    
+
     // Update icon and color based on type
     if (type === 'error') {
         toastContainer.style.background = 'rgba(220, 38, 38, 0.9)';
@@ -424,12 +459,12 @@ function showToast(message, type = 'success') {
         toastContainer.style.borderColor = '#22c55e';
         iconElement.className = 'fas fa-check-circle text-white text-xl';
     }
-    
+
     // Animate in
     setTimeout(() => {
         toastContainer.style.transform = 'translateX(0)';
     }, 10);
-    
+
     // Auto hide (longer for errors)
     const hideDelay = type === 'error' ? 5000 : 3000;
     setTimeout(() => {
@@ -474,7 +509,7 @@ function downloadPdfBackend() {
         URL.revokeObjectURL(url);
         showToast('PDF downloaded', 'success');
     }).catch(err => {
-        console.error(err);
+        // console.error(err);
         showToast('Error downloading PDF. Please try again.', 'error');
     });
 }
@@ -496,7 +531,7 @@ function previewPdfBackend() {
         window.open(url, '_blank');
         setTimeout(() => URL.revokeObjectURL(url), 10000);
     }).catch(err => {
-        console.error(err);
+        // console.error(err);
         showToast('Error generating PDF preview. Please try again.', 'error');
     });
 }
@@ -504,9 +539,9 @@ function previewPdfBackend() {
 // Initialize tooltips
 function initializeTooltips() {
     const tooltipElements = document.querySelectorAll('[title]');
-    
+
     tooltipElements.forEach(element => {
-        element.addEventListener('mouseenter', function() {
+        element.addEventListener('mouseenter', function () {
             const tooltip = document.createElement('div');
             tooltip.className = 'absolute z-50 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg';
             tooltip.textContent = this.getAttribute('title');
@@ -514,14 +549,14 @@ function initializeTooltips() {
             tooltip.style.left = '50%';
             tooltip.style.transform = 'translateX(-50%)';
             tooltip.style.marginBottom = '8px';
-            
+
             this.style.position = 'relative';
             this.appendChild(tooltip);
             this.removeAttribute('title');
             this.dataset.originalTitle = tooltip.textContent;
         });
-        
-        element.addEventListener('mouseleave', function() {
+
+        element.addEventListener('mouseleave', function () {
             const tooltip = this.querySelector('.absolute');
             if (tooltip) {
                 this.removeChild(tooltip);
@@ -538,22 +573,22 @@ async function generateJobDescription(jobData) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(jobData)
         });
-        
+
         // Check if the response is ok
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const result = await response.json();
-        
+
         if (result.success && result.jobDescription) {
             return formatJobDescriptionDisplay(result);
         } else {
             throw new Error(result.message || result.error || "Failed to generate job description. Please try again.");
         }
     } catch (error) {
-        console.error("Error in generateJobDescription:", error);
-        
+        // console.error("Error in generateJobDescription:", error);
+
         // Provide more specific error messages
         if (error.name === 'TypeError' && error.message.includes('fetch')) {
             throw new Error("Network error - please check your connection and try again.");
@@ -584,13 +619,13 @@ function formatJobDescriptionDisplay(result) {
     // Store job details and description globally for server-side PDF generation
     currentJobDetails = jobDetails;
     currentJobDescription = jobDescription || '';
-    
+
     // Build a semantic, decorated HTML version of the job description
-    function escapeHtml(str){ return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+    function escapeHtml(str) { return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
     const lines = (jobDescription || '').split(/\r?\n/).map(l => l.trim());
-    const sectionOrder = ['Job Overview','Key Responsibilities','Required Qualifications','Preferred Qualifications','What We Offer','How to Apply'];
-    const sections = { 'Job Overview':[], 'Key Responsibilities':[], 'Required Qualifications':[], 'Preferred Qualifications':[], 'What We Offer':[], 'How to Apply':[] };
+    const sectionOrder = ['Job Overview', 'Key Responsibilities', 'Required Qualifications', 'Preferred Qualifications', 'What We Offer', 'How to Apply'];
+    const sections = { 'Job Overview': [], 'Key Responsibilities': [], 'Required Qualifications': [], 'Preferred Qualifications': [], 'What We Offer': [], 'How to Apply': [] };
     let current = 'Job Overview';
 
     const headingMap = {
@@ -604,12 +639,32 @@ function formatJobDescriptionDisplay(result) {
 
     for (let raw of lines) {
         if (!raw) { sections[current].push(''); continue; }
-        const low = raw.replace(/^\d+\.\s*/, '').replace(/\*\*/g,'').toLowerCase();
+        const low = raw.replace(/^\d+\.\s*/, '').replace(/\*\*/g, '').toLowerCase();
         if (headingMap[low] !== undefined) { current = headingMap[low]; continue; }
         const m = raw.match(/^([A-Za-z ][A-Za-z ]{2,}):$/);
         if (m && headingMap[m[1].toLowerCase()]) { current = headingMap[m[1].toLowerCase()]; continue; }
         sections[current].push(raw);
     }
+
+    // REQUIREMENT: Add an email address to the “How to Apply” section
+    const emailStr = jobDetails.email || jobDetails.companyEmail;
+    // Only add if we have an email and it's not already clearly in the section (simple check)
+    // We'll append it to ensure it's there.
+    if (emailStr) {
+        sections['How to Apply'].push(`Please send your application to ${emailStr}`);
+    }
+
+    // REQUIREMENT: Ensure the same email content is included in the generated/downloaded PDF
+    // We reconstruct currentJobDescription from the parsed sections to ensure sync
+    let reconstructed = '';
+    for (let key of sectionOrder) {
+        if (sections[key] && sections[key].length > 0) {
+            reconstructed += `${key}:\n`;
+            // Join lines, ensure clean spacing
+            reconstructed += sections[key].join('\n') + '\n\n';
+        }
+    }
+    currentJobDescription = reconstructed.trim();
 
     const icons = {
         'Job Overview': 'fas fa-info-circle', 'Key Responsibilities': 'fas fa-tasks',
@@ -679,20 +734,9 @@ function formatJobDescriptionDisplay(result) {
             <div class="prose max-w-none text-sm sm:text-base break-words">
                 ${bodyHtml}
             </div>
-
-            <div class="bg-light-cream/30 backdrop-blur-sm rounded-2xl p-6 border border-soft-gold/30">
-                <h3 class="text-xl font-bold text-primary-red mb-4 flex items-center"><i class="fas fa-paper-plane mr-3"></i>How to Apply</h3>
-                <p class="text-gray-700 mb-4">Ready to join our team? Send your application to:</p>
-                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                    <a href="${gmailHref}" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-primary-red to-soft-gold text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center">
-                        <i class="fas fa-envelope mr-2"></i>
-                        Apply Now - ${applyEmailEsc || 'No email provided'}
-                    </a>
-                    <div class="text-sm text-gray-600 flex items-center">
-                        <i class="fas fa-clock mr-2"></i>
-                        Generated with ${metadata && metadata.wordCount ? metadata.wordCount : '—'} words
-                    </div>
-                </div>
+            
+            <div class="text-right text-xs text-gray-500 mt-4">
+                Generated with ${metadata && metadata.wordCount ? metadata.wordCount : '—'} words
             </div>
         </div>
     `;

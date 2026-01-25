@@ -54,3 +54,4 @@ Thumbs.db
 *.key
 *.crt
 .vercel
+.env*.local

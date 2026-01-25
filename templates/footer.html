@@ -1,68 +1,199 @@
-<!-- Footer -->
-    <!-- <footer class="glassmorphism border-t border-white/20 py-12 px-6">
-        <div class="container mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div class="space-y-4">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-gradient-to-r from-neon-red to-neon-dark-red rounded-lg flex items-center justify-center">
-                            <i class="fas fa-robot text-white text-xl"></i>
-                        </div>
-                        <span class="text-2xl font-bold gradient-text">AI JobGen</span>
-                    </div>
-                    <p class="text-gray-300">
-                        Revolutionizing recruitment with AI-powered job description generation.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-300 hover:text-neon-red transition-colors duration-300">
-                            <i class="fab fa-twitter text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-neon-red transition-colors duration-300">
-                            <i class="fab fa-linkedin text-xl"></i>
-                        </a>
-                        <a href="#" class="text-gray-300 hover:text-neon-red transition-colors duration-300">
-                            <i class="fab fa-github text-xl"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Product</h4>
-                    <ul class="space-y-2 text-gray-300">
-                        <li><a href="#" class="hover:text-neon-red transition-colors duration-300">Features</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Company</h4>
-                    <ul class="space-y-2 text-gray-300">
-                        <li><a href="#" class="hover:text-neon-red transition-colors duration-300">About</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Support</h4>
-                    <ul class="space-y-2 text-gray-300">
-                        <li><a href="#" class="hover:text-neon-red transition-colors duration-300">Help Center</a></li>
-                        <li><a href="#" class="hover:text-neon-red transition-colors duration-300">Contact</a></li>
-                        <li><a href="#" class="hover:text-neon-red transition-colors duration-300">Privacy</a></li>
-                    </ul>
-                </div>
+<footer class="glassmorphism border-t border-white/20 py-4 px-6 mt-8 relative z-40">
+    <div class="container mx-auto text-center">
+        <div class="flex items-center justify-center space-x-2 mb-2">
+            <div
+                class="w-7 h-7 bg-gradient-to-r from-primary-red to-soft-gold rounded-md flex items-center justify-center">
+                <i class="fas fa-robot text-white text-sm"></i>
             </div>
-            
-            <div class="border-t border-white/20 pt-8 mt-8 text-center text-gray-300">
-                <p>&copy; 2025 AI JobGen.</p>
-            </div>
+            <span class="text-base font-bold gradient-text">AI JobGen</span>
         </div>
-    </footer> -->
 
-     <footer class="glassmorphism border-t border-white/20 py-8 px-6 mt-20">
-        <div class="container mx-auto text-center">
-            <div class="flex items-center justify-center space-x-3 mb-4">
-                <div class="w-8 h-8 bg-gradient-to-r from-primary-red to-soft-gold rounded-lg flex items-center justify-center">
-                    <i class="fas fa-robot text-white"></i>
-                </div>
-                <span class="text-xl font-bold gradient-text">AI JobGen</span>
-            </div>
-            <p class="text-gray-700">&copy; 2025 AI JobGen.</p>
+        <!-- Footer Links (Triggers) -->
+        <div class="flex flex-wrap justify-center gap-6 mb-4 text-sm font-medium text-gray-700">
+            <button onclick="openModal('about')"
+                class="hover:text-primary-red transition-colors focus:outline-none">About Us</button>
+            <button onclick="openModal('privacy')"
+                class="hover:text-primary-red transition-colors focus:outline-none">Privacy Policy</button>
+            <button onclick="openModal('terms')"
+                class="hover:text-primary-red transition-colors focus:outline-none">Terms of Service</button>
         </div>
-    </footer>
+
+        <p class="text-gray-600 text-sm">&copy; 2026 AI JobGen. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Modal Backdrop -->
+<div id="legal-modal-backdrop" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity opacity-0" id="modal-overlay"></div>
+
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+
+            <!-- Modal Panel -->
+            <div id="legal-modal-panel"
+                class="relative transform overflow-hidden rounded-2xl bg-[#F8EEDF] text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-2xl border-2 border-[#E8C999] opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+
+                <!-- Close Button -->
+                <div class="absolute right-4 top-4 z-10">
+                    <button type="button" onclick="closeLegalModal()"
+                        class="rounded-full bg-white/50 p-2 text-gray-400 hover:text-gray-500 hover:bg-white transition-all">
+                        <span class="sr-only">Close</span>
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Modal Content Container -->
+                <div class="px-6 py-8 sm:p-10 max-h-[80vh] overflow-y-auto custom-scrollbar">
+
+                    <!-- Content: About -->
+                    <div id="content-about" class="hidden modal-section">
+                        <div class="text-center mb-6">
+                            <div
+                                class="w-12 h-12 mx-auto bg-gradient-to-r from-primary-red to-soft-gold rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-primary-red/20">
+                                <i class="fas fa-users text-2xl text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-primary-red">About Us</h3>
+                        </div>
+                        <div class="prose text-gray-700 space-y-4">
+                            <p>Welcome to <strong>AI JobGen</strong>. We are dedicated to transforming the recruitment
+                                process for startups, HR teams, and hiring managers.</p>
+                            <p>Our mission is simple: to eliminate the blank-page syndrome when writing job
+                                descriptions. By leveraging advanced AI models, we help you generate professional,
+                                accurate, and compelling job posts in seconds.</p>
+                            <h4 class="font-bold text-lg mt-4 text-[#8E1616]">Our Mission</h4>
+                            <p>To streamline the hiring process by providing powerful tools that save time and improve
+                                candidate quality.</p>
+                        </div>
+                    </div>
+
+                    <!-- Content: Privacy -->
+                    <div id="content-privacy" class="hidden modal-section">
+                        <div class="text-center mb-6">
+                            <div
+                                class="w-12 h-12 mx-auto bg-gradient-to-r from-soft-gold to-primary-red rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-soft-gold/20">
+                                <i class="fas fa-shield-alt text-2xl text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-primary-red">Privacy Policy</h3>
+                        </div>
+                        <div class="prose text-gray-700 space-y-4">
+                            <p>This Privacy Policy describes how your personal information is collected, used, and
+                                shared upon visiting our Site.</p>
+                            <h4 class="font-bold text-lg mt-4 text-[#8E1616]">Personal Information</h4>
+                            <p>We do not collect any personal data unless explicitly provided by you for the purpose of
+                                generating job descriptions. Data entered into the generator is processed to create the
+                                content and is not permanently stored or shared with third parties for marketing
+                                purposes.</p>
+                            <h4 class="font-bold text-lg mt-4 text-[#8E1616]">Changes</h4>
+                            <p>We may update this privacy policy from time to time in order to reflect, for example,
+                                changes to our practices or for other operational, legal or regulatory reasons.</p>
+                        </div>
+                    </div>
+
+                    <!-- Content: Terms -->
+                    <div id="content-terms" class="hidden modal-section">
+                        <div class="text-center mb-6">
+                            <div
+                                class="w-12 h-12 mx-auto bg-gradient-to-r from-primary-red to-soft-gold rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-primary-red/20">
+                                <i class="fas fa-gavel text-2xl text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-primary-red">Terms of Service</h3>
+                        </div>
+                        <div class="prose text-gray-700 space-y-4">
+                            <p>By accessing this website, you agree to be bound by these Terms and Conditions of Use.
+                            </p>
+                            <h4 class="font-bold text-lg mt-4 text-[#8E1616]">Use License</h4>
+                            <p>Permission is granted to temporarily download one copy of the materials (information or
+                                software) on AI Job Description Generator's website for personal, non-commercial
+                                transitory viewing only.</p>
+                            <h4 class="font-bold text-lg mt-4 text-[#8E1616]">Disclaimer</h4>
+                            <p>The materials on AI Job Description Generator's website are provided "as is". AI Job
+                                Description Generator makes no warranties, expressed or implied, and hereby disclaims
+                                and negates all other warranties.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(142, 22, 22, 0.2);
+        border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(142, 22, 22, 0.4);
+    }
+</style>
+
+<script>
+    function openModal(type) {
+        const backdrop = document.getElementById('legal-modal-backdrop');
+        const overlay = document.getElementById('modal-overlay');
+        const panel = document.getElementById('legal-modal-panel');
+
+        // Hide all sections first
+        document.querySelectorAll('.modal-section').forEach(el => el.classList.add('hidden'));
+
+        // Show requested section
+        const content = document.getElementById('content-' + type);
+        if (content) content.classList.remove('hidden');
+
+        // Show modal container
+        backdrop.classList.remove('hidden');
+
+        // Animation in
+        // Small delay to allow display:block to apply before opacity transition
+        requestAnimationFrame(() => {
+            overlay.classList.remove('opacity-0');
+            panel.classList.remove('opacity-0', 'translate-y-4', 'sm:translate-y-0', 'sm:scale-95');
+            panel.classList.add('opacity-100', 'translate-y-0', 'sm:scale-100');
+        });
+
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+
+    function closeLegalModal() {
+        const backdrop = document.getElementById('legal-modal-backdrop');
+        const overlay = document.getElementById('modal-overlay');
+        const panel = document.getElementById('legal-modal-panel');
+
+        // Animation out
+        overlay.classList.add('opacity-0');
+        panel.classList.remove('opacity-100', 'translate-y-0', 'sm:scale-100');
+        panel.classList.add('opacity-0', 'translate-y-4', 'sm:translate-y-0', 'sm:scale-95');
+
+        setTimeout(() => {
+            backdrop.classList.add('hidden');
+            document.body.style.overflow = '';
+        }, 300); // Match transition duration
+    }
+
+    // Close on click outside
+    document.getElementById('legal-modal-backdrop').addEventListener('click', function (e) {
+        if (e.target === this || e.target.closest('#modal-overlay')) {
+            closeLegalModal();
+        }
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !document.getElementById('legal-modal-backdrop').classList.contains('hidden')) {
+            closeLegalModal();
+        }
+    });
+</script>
