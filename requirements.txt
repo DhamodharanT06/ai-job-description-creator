@@ -1,4 +1,4 @@
-flask
-python-dotenv
-reportlab
-requests
+Flask==3.1.0
+requests==2.32.3
+reportlab==4.4.4
+python-dotenv==1.1.1

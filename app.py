@@ -180,7 +180,6 @@ IMPORTANT: Use PLAIN TEXT only. Do NOT use markdown formatting, asterisks, or sp
             headers = {
                 'Authorization': f'Bearer {OPENROUTER_API_KEY}',
                 'Content-Type': 'application/json',
-                'HTTP-Referer':  os.getenv('VERCEL_URL', 'https://vercel.app'),
                 'X-Title': 'AI Job Description Generator'
             }
             payload = {
@@ -603,10 +602,12 @@ def debug_status():
 
 @app.route('/diag', methods=['GET'])
 def diag():
-    """Diagnostic endpoint: test DNS, connectivity, and API health."""
-    import socket
+    """Diagnostic endpoint: test DNS, connectivity, and API health.
+
+    This version avoids using the low-level `socket` module so it can run
+    in environments where raw socket operations are restricted.
+    """
     import sys
-    
     results = {
         'timestamp': str(__import__('datetime').datetime.now()),
         'python_version': sys.version,
@@ -614,26 +615,32 @@ def diag():
         'connectivity_checks': {},
         'api_status': None
     }
-    
-    # DNS check
+
+    # DNS check via public DNS-over-HTTPS (Google) as a lightweight alternative
     try:
-        host = 'openrouter.ai'
-        ip = socket.gethostbyname(host)
-        results['dns_checks'][host] = {'status': 'OK', 'ip': ip}
+        dns_resp = requests.get('https://dns.google/resolve?name=openrouter.ai', timeout=5)
+        if dns_resp.ok:
+            j = dns_resp.json()
+            answers = j.get('Answer') or j.get('answer') or []
+            ips = [a.get('data') for a in answers if isinstance(a, dict) and a.get('type') in (1,)]
+            results['dns_checks']['openrouter.ai'] = {'status': 'OK', 'ips': ips}
+        else:
+            results['dns_checks']['openrouter.ai'] = {'status': f'HTTP {dns_resp.status_code}'}
     except Exception as e:
-        results['dns_checks'][host] = {'status': 'FAILED', 'error': str(e)}
-    
-    # HTTPS connectivity check
+        results['dns_checks']['openrouter.ai'] = {'status': 'FAILED', 'error': str(e)}
+
+    # HTTPS connectivity check using requests
     try:
-        import ssl
-        ctx = ssl.create_default_context()
-        with socket.create_connection(('openrouter.ai', 443), timeout=5) as sock:
-            with ctx.wrap_socket(sock, server_hostname='openrouter.ai') as ssock:
-                results['connectivity_checks']['openrouter_https'] = {'status': 'OK', 'cert_subject': str(ssock.getpeercert().get('subject', 'N/A'))}
+        r = requests.get('https://openrouter.ai', timeout=5)
+        results['connectivity_checks']['openrouter_https'] = {
+            'status': 'OK' if r.ok else f'HTTP {r.status_code}',
+            'response_code': r.status_code,
+            'headers_preview': dict(list(r.headers.items())[:5])
+        }
     except Exception as e:
         results['connectivity_checks']['openrouter_https'] = {'status': 'FAILED', 'error': str(e)}
-    
-    # API quick health check
+
+    # API quick health check (keeps same behavior but uses requests only)
     if OPENROUTER_API_KEY:
         try:
             headers = {
@@ -659,7 +666,7 @@ def diag():
             results['api_status'] = {'status': 'FAILED', 'error': str(e)}
     else:
         results['api_status'] = {'status': 'SKIPPED', 'reason': 'OPENROUTER_API_KEY not set'}
-    
+
     return jsonify(results)
 @app.route('/favicon.ico')
 def favicon():
