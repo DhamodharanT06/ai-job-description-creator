@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Job Description Generator</title>
+    <title>Generate Job Description Using AI</title>
+    <meta name="description" content="Use AI to generate accurate and professional job descriptions instantly." />
+    <meta name="robots" content="noindex, nofollow">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -84,7 +87,7 @@
                 }
             }
         }
-        
+
     </script>
     <style>
         /* Fix autofill background issue - ensure text is always black/dark */
@@ -106,7 +109,7 @@
             color: #000000 !important;
             transition: background-color 5000s ease-in-out 0s;
         }
-        
+
         /* Firefox autofill fix */
         input:-moz-autofill,
         textarea:-moz-autofill,
@@ -114,7 +117,7 @@
             background-color: rgba(248, 238, 223, 0.2) !important;
             color: #000000 !important;
         }
-        
+
         /* General autofill override */
         input:autofill,
         textarea:autofill,
@@ -122,54 +125,47 @@
             background-color: rgba(248, 238, 223, 0.2) !important;
             color: #000000 !important;
         }
-        
+
         /* Ensure all input text is always black */
-        input, textarea, select {
+        input,
+        textarea,
+        select {
             color: #000000 !important;
         }
-        
-        input::placeholder, textarea::placeholder {
+
+        input::placeholder,
+        textarea::placeholder {
             color: rgba(0, 0, 0, 0.5) !important;
         }
     </style>
 </head>
-<body class="min-h-screen text-dark-text overflow-x-hidden" style="background: linear-gradient(45deg, #F8EEDF, #E8C999, #8E1616); background-size: 400% 400%; animation: gradient 15s ease infinite; font-family: 'Inter', sans-serif;">
+
+<body class="min-h-screen text-dark-text overflow-x-hidden"
+    style="background: linear-gradient(45deg, #F8EEDF, #E8C999, #8E1616); background-size: 400% 400%; animation: gradient 15s ease infinite; font-family: 'Inter', sans-serif;">
     <!-- Floating Particles Background -->
     <div class="absolute w-full h-full overflow-hidden">
-        <div class="absolute w-1 h-1 rounded-full animate-float" style="left: 10%; animation-delay: 0s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
-        <div class="absolute w-1 h-1 rounded-full animate-float" style="left: 20%; animation-delay: 2s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
-        <div class="absolute w-1 h-1 rounded-full animate-float" style="left: 30%; animation-delay: 4s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
-        <div class="absolute w-1 h-1 rounded-full animate-float" style="left: 40%; animation-delay: 1s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
-        <div class="absolute w-1 h-1 rounded-full animate-float" style="left: 50%; animation-delay: 3s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
-        <div class="absolute w-1 h-1 rounded-full animate-float" style="left: 60%; animation-delay: 5s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
-        <div class="absolute w-1 h-1 rounded-full animate-float" style="left: 70%; animation-delay: 2.5s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
-        <div class="absolute w-1 h-1 rounded-full animate-float" style="left: 80%; animation-delay: 4.5s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
-        <div class="absolute w-1 h-1 rounded-full animate-float" style="left: 90%; animation-delay: 1.5s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
+        <div class="absolute w-1 h-1 rounded-full animate-float"
+            style="left: 10%; animation-delay: 0s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
+        <div class="absolute w-1 h-1 rounded-full animate-float"
+            style="left: 20%; animation-delay: 2s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
+        <div class="absolute w-1 h-1 rounded-full animate-float"
+            style="left: 30%; animation-delay: 4s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
+        <div class="absolute w-1 h-1 rounded-full animate-float"
+            style="left: 40%; animation-delay: 1s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
+        <div class="absolute w-1 h-1 rounded-full animate-float"
+            style="left: 50%; animation-delay: 3s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
+        <div class="absolute w-1 h-1 rounded-full animate-float"
+            style="left: 60%; animation-delay: 5s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
+        <div class="absolute w-1 h-1 rounded-full animate-float"
+            style="left: 70%; animation-delay: 2.5s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
+        <div class="absolute w-1 h-1 rounded-full animate-float"
+            style="left: 80%; animation-delay: 4.5s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
+        <div class="absolute w-1 h-1 rounded-full animate-float"
+            style="left: 90%; animation-delay: 1.5s; background: linear-gradient(45deg, #8E1616, #E8C999);"></div>
     </div>
 
     <!-- Navigation -->
- <div id="navbar"></div>
-        <script>
-        // Load Navbar (safe: wait for generator.js to define initializeMobileMenu)
-        fetch("{{ url_for('navbar') }}")
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById("navbar").innerHTML = data;
-                // If generator.js already loaded, call immediately; otherwise poll briefly.
-                if (typeof initializeMobileMenu === 'function') {
-                    initializeMobileMenu();
-                } else {
-                    let tries = 0;
-                    const id = setInterval(() => {
-                        if (typeof initializeMobileMenu === 'function') { initializeMobileMenu(); clearInterval(id); }
-                        else if (++tries > 30) { clearInterval(id); }
-                    }, 100);
-                }
-            })
-            .catch(err => {
-                console.error('Navbar load failed:', err);
-            });
-        </script>
+    {% include 'navbar.html' %}
 
     <!-- Main Content -->
     <main class="max-w-screen-xl mx-auto px-4 sm:px-6 py-8">
@@ -177,7 +173,10 @@
             <!-- Header -->
             <div class="text-center mb-10 animate-slide-up">
                 <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                    <span class="bg-gradient-to-r from-primary-red via-soft-gold to-dark-text bg-clip-text text-transparent" style="background-size: 300% 300%; animation: gradient 3s ease infinite;">AI Job Description</span><br>
+                    <span
+                        class="bg-gradient-to-r from-primary-red via-soft-gold to-dark-text bg-clip-text text-transparent"
+                        style="background-size: 300% 300%; animation: gradient 3s ease infinite;">AI Job
+                        Description</span><br>
                     Generator
                 </h1>
                 <p class="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto">
@@ -189,101 +188,90 @@
                 <!-- Form Section -->
                 <div class="space-y-8 h-full">
                     <!-- Job Details Section -->
-                    <div class="relative rounded-3xl p-10 animate-slide-up backdrop-blur-xl border border-soft-gold/30" style="background: linear-gradient(135deg, rgba(248, 238, 223, 0.2), rgba(232, 201, 153, 0.1)); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(232, 201, 153, 0.2) inset;">
+                    <div id="left-card"
+                        class="relative rounded-3xl p-10 animate-slide-up backdrop-blur-xl border border-soft-gold/30"
+                        style="background: linear-gradient(135deg, rgba(248, 238, 223, 0.2), rgba(232, 201, 153, 0.1)); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(232, 201, 153, 0.2) inset;">
                         <div class="mb-8">
-                            <h2 class="text-2xl sm:text-3xl font-black mb-2 flex items-center bg-gradient-to-r from-primary-red via-soft-gold to-dark-text bg-clip-text text-transparent" style="background-size: 300% 300%; animation: gradient 4s ease infinite; filter: drop-shadow(0 0 10px rgba(142, 22, 22, 0.3));">
+                            <h2 class="text-2xl sm:text-3xl font-black mb-2 flex items-center bg-gradient-to-r from-primary-red via-soft-gold to-dark-text bg-clip-text text-transparent"
+                                style="background-size: 300% 300%; animation: gradient 4s ease infinite; filter: drop-shadow(0 0 10px rgba(142, 22, 22, 0.3));">
                                 <i class="text-4xl mr-4 animate-float">💼</i>
                                 Job Details
                             </h2>
-                            <p class="text-gray-600 text-base sm:text-lg">Fill in the details to generate your perfect job description</p>
+                            <p class="text-gray-600 text-base sm:text-lg">Fill in the details to generate your perfect
+                                job description</p>
                         </div>
-                        
+
                         <form id="job-form" class="space-y-8">
 
                             <!-- Job Title -->
                             <div class="relative mb-6">
-                                <input 
-                                    type="text" 
-                                    id="jobTitle" 
-                                    name="jobTitle"
-                                    placeholder=" "
+                                <input type="text" id="jobTitle" name="jobTitle" placeholder=" "
                                     class="peer w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-dark-text placeholder-gray-500 text-base sm:text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
                                     required
-                                    style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
-                                >
-                                <label for="jobTitle" class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Job Title</label>
+                                    style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;">
+                                <label for="jobTitle"
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Job
+                                    Title</label>
                             </div>
 
                             <!-- Company Name -->
-                            <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out" style="animation-delay: 0.4s; animation-fill-mode: forwards; animation-name: slideUp;">
-                                <input 
-                                    type="text" 
-                                    id="companyName" 
-                                    name="companyName"
-                                    placeholder=" "
+                            <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out"
+                                style="animation-delay: 0.4s; animation-fill-mode: forwards; animation-name: slideUp;">
+                                <input type="text" id="companyName" name="companyName" placeholder=" "
                                     class="peer w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-dark-text placeholder-gray-500 text-base sm:text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
                                     required
-                                    style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
-                                >
-                                <label for="companyName" class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Company Name</label>
+                                    style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;">
+                                <label for="companyName"
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Company
+                                    Name</label>
                             </div>
 
                             <!-- Company Email -->
-                            <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out" style="animation-delay: 0.5s; animation-fill-mode: forwards; animation-name: slideUp;">
-                                <input 
-                                    type="email" 
-                                    id="companyEmail" 
-                                    name="companyEmail"
-                                    placeholder=" "
+                            <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out"
+                                style="animation-delay: 0.5s; animation-fill-mode: forwards; animation-name: slideUp;">
+                                <input type="email" id="companyEmail" name="companyEmail" placeholder=" "
                                     class="peer w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-dark-text placeholder-gray-500 text-base sm:text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
                                     required
-                                    style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
-                                >
-                                <label for="companyEmail" class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Company Email</label>
+                                    style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;">
+                                <label for="companyEmail"
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Company
+                                    Email</label>
                             </div>
 
                             <!-- Skills Known -->
-                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out" style="animation-delay: 0.3s; animation-fill-mode: forwards; animation-name: slideUp;">
-                                    <input 
-                                        type="text" 
-                                        id="skillsKnown" 
-                                        name="skillsKnown"
-                                        placeholder=" "
-                                        class="peer w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-dark-text placeholder-gray-500 text-base sm:text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
-                                        required
-                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
-                                    >
-                                    <label for="skillsKnown" class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Skills Known</label>
-                                </div>
+                            <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out"
+                                style="animation-delay: 0.3s; animation-fill-mode: forwards; animation-name: slideUp;">
+                                <input type="text" id="skillsKnown" name="skillsKnown" placeholder=" "
+                                    class="peer w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-dark-text placeholder-gray-500 text-base sm:text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
+                                    required
+                                    style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;">
+                                <label for="skillsKnown"
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Skills
+                                    Known</label>
+                            </div>
 
                             <!-- Two Column Layout for Degree and Skills -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Degree -->
-                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out" style="animation-delay: 0.2s; animation-fill-mode: forwards; animation-name: slideUp;">
-                                    <input 
-                                        type="text" 
-                                        id="degree" 
-                                        name="degree"
-                                        placeholder=" "
+                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out"
+                                    style="animation-delay: 0.2s; animation-fill-mode: forwards; animation-name: slideUp;">
+                                    <input type="text" id="degree" name="degree" placeholder=" "
                                         class="peer w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-dark-text placeholder-gray-500 text-base sm:text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
                                         required
-                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
-                                    >
-                                    <label for="degree" class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Degree</label>
+                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;">
+                                    <label for="degree"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Degree</label>
                                 </div>
 
                                 <!--Salary-->
-                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out" style="animation-delay: 0.2s; animation-fill-mode: forwards; animation-name: slideUp;">
-                                    <input 
-                                        type="text" 
-                                        id="salary" 
-                                        name="salary"
-                                        placeholder=" "
+                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out"
+                                    style="animation-delay: 0.2s; animation-fill-mode: forwards; animation-name: slideUp;">
+                                    <input type="text" id="salary" name="salary" placeholder=" "
                                         class="peer w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-dark-text placeholder-gray-500 text-base sm:text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
                                         required
-                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
-                                    >
-                                    <label for="salary" class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Salary</label>
+                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;">
+                                    <label for="salary"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Salary</label>
                                 </div>
 
                             </div>
@@ -291,106 +279,105 @@
                             <!-- Location Row -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- State -->
-                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out" style="animation-delay: 0.55s; animation-fill-mode: forwards; animation-name: slideUp;">
-                                    <input 
-                                        type="text" 
-                                        id="state" 
-                                        name="state"
-                                        placeholder=" "
+                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out"
+                                    style="animation-delay: 0.55s; animation-fill-mode: forwards; animation-name: slideUp;">
+                                    <input type="text" id="state" name="state" placeholder=" "
                                         class="peer w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-dark-text placeholder-gray-500 text-base sm:text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
                                         required
-                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
-                                    >
-                                    <label for="state" class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">State</label>
+                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;">
+                                    <label for="state"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">State</label>
                                 </div>
 
                                 <!-- City -->
-                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out" style="animation-delay: 0.6s; animation-fill-mode: forwards; animation-name: slideUp;">
-                                    <input 
-                                        type="text" 
-                                        id="city" 
-                                        name="city"
-                                        placeholder=" "
+                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out"
+                                    style="animation-delay: 0.6s; animation-fill-mode: forwards; animation-name: slideUp;">
+                                    <input type="text" id="city" name="city" placeholder=" "
                                         class="peer w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-dark-text placeholder-gray-500 text-base sm:text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
                                         required
-                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
-                                    >
-                                    <label for="city" class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">City</label>
+                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;">
+                                    <label for="city"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">City</label>
                                 </div>
                             </div>
 
                             <!-- Experience and Job Type Row -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Experience Level -->
-                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out" style="animation-delay: 0.7s; animation-fill-mode: forwards; animation-name: slideUp;">
-                                    <select 
-                                        id="experienceLevel" 
-                                        name="experienceLevel"
+                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out"
+                                    style="animation-delay: 0.7s; animation-fill-mode: forwards; animation-name: slideUp;">
+                                    <select id="experienceLevel" name="experienceLevel"
                                         class="peer w-full px-6 py-4 rounded-xl text-dark-text text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
                                         required
-                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
-                                    >
+                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;">
                                         <option value="" disabled selected hidden></option>
-                                        <option value="entry" class="bg-soft-gold text-dark-text p-3">Entry Level (0-2 years)</option>
-                                        <option value="mid" class="bg-soft-gold text-dark-text p-3">Mid Level (3-5 years)</option>
-                                        <option value="senior" class="bg-soft-gold text-dark-text p-3">Senior Level (5-8 years)</option>
-                                        <option value="lead" class="bg-soft-gold text-dark-text p-3">Lead/Principal (8+ years)</option>
+                                        <option value="entry" class="bg-soft-gold text-dark-text p-3">Entry Level (0-2
+                                            years)</option>
+                                        <option value="mid" class="bg-soft-gold text-dark-text p-3">Mid Level (3-5
+                                            years)</option>
+                                        <option value="senior" class="bg-soft-gold text-dark-text p-3">Senior Level (5-8
+                                            years)</option>
+                                        <option value="lead" class="bg-soft-gold text-dark-text p-3">Lead/Principal (8+
+                                            years)</option>
                                     </select>
-                                    <label for="experienceLevel" class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Experience Level</label>
+                                    <label for="experienceLevel"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Experience
+                                        Level</label>
                                 </div>
 
                                 <!-- Job Type -->
-                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out" style="animation-delay: 0.8s; animation-fill-mode: forwards; animation-name: slideUp;">
-                                    <select 
-                                        id="jobType" 
-                                        name="jobType"
+                                <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out"
+                                    style="animation-delay: 0.8s; animation-fill-mode: forwards; animation-name: slideUp;">
+                                    <select id="jobType" name="jobType"
                                         class="peer w-full px-6 py-4 rounded-xl text-dark-text text-lg font-normal transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
                                         required
-                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;"
-                                    >
+                                        style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif;">
                                         <option value="" disabled selected hidden></option>
-                                        <option value="full-time" class="bg-soft-gold text-dark-text p-3">Full-time</option>
-                                        <option value="part-time" class="bg-soft-gold text-dark-text p-3">Part-time</option>
-                                        <option value="contract" class="bg-soft-gold text-dark-text p-3">Contract</option>
-                                        <option value="freelance" class="bg-soft-gold text-dark-text p-3">Freelance</option>
-                                        <option value="internship" class="bg-soft-gold text-dark-text p-3">Internship</option>
+                                        <option value="full-time" class="bg-soft-gold text-dark-text p-3">Full-time
+                                        </option>
+                                        <option value="part-time" class="bg-soft-gold text-dark-text p-3">Part-time
+                                        </option>
+                                        <option value="contract" class="bg-soft-gold text-dark-text p-3">Contract
+                                        </option>
+                                        <option value="freelance" class="bg-soft-gold text-dark-text p-3">Freelance
+                                        </option>
+                                        <option value="internship" class="bg-soft-gold text-dark-text p-3">Internship
+                                        </option>
                                     </select>
-                                    <label for="jobType" class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Job Type</label>
+                                    <label for="jobType"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">Job
+                                        Type</label>
                                 </div>
                             </div>
 
                             <!-- Additional Details -->
-                            
-                            <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out" style="animation-delay: 0.9s; animation-fill-mode: forwards; animation-name: slideUp;">
-                                <textarea 
-                                     id="additionalDetails" 
-                                     name="additionalDetails"
-                                     placeholder=" "
-                                     rows="4"
-                                     class="peer w-full px-6 py-4 rounded-xl text-dark-text placeholder-gray-500 text-lg font-normal resize-none transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
-                                     style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif; white-space: pre-wrap; overflow-wrap: break-word;"
-                                    >
-                                </textarea>
-                                <label for="additionalDetails" 
-                                       class="absolute left-4 top-3 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">
-                                       Requirements
+
+                            <div class="relative mb-6 opacity-0 translate-y-7 transition-all duration-700 ease-out"
+                                style="animation-delay: 0.9s; animation-fill-mode: forwards; animation-name: slideUp;">
+                                <textarea id="additionalDetails" name="additionalDetails" placeholder=" " rows="4"
+                                    class="peer w-full px-6 py-4 rounded-xl text-dark-text placeholder-gray-500 text-lg font-normal resize-none transition-all duration-500 border-2 border-soft-gold/30 bg-light-cream/20 focus:border-primary-red focus:bg-light-cream/30 focus:scale-[1.02] hover:border-primary-red/50 hover:bg-light-cream/25 active:bg-light-cream/30"
+                                    style="background: rgba(248, 238, 223, 0.2) !important; font-family: 'Segoe UI', 'Arial', sans-serif; white-space: pre-wrap; overflow-wrap: break-word;"></textarea>
+                                <label for="additionalDetails"
+                                    class="absolute left-4 top-3 text-dark-text text-sm font-semibold px-3 py-1 rounded-lg backdrop-blur-sm transition-all duration-500 pointer-events-none peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-primary-red peer-[:not(:placeholder-shown)]:-translate-y-8 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:text-primary-red bg-transparent">
+                                    Requirements
                                 </label>
                             </div>
 
                             <!-- Generate Button -->
                             <div>
-                                <button 
-                                    type="submit" 
-                                    id="generateBtn"
-                                    class="relative w-full px-6 sm:px-8 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold text-white transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden bg-gradient-to-r from-primary-red to-soft-gold hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-[0_20px_40px_rgba(142,22,22,0.4),0_0_50px_rgba(142,22,22,0.3)] before:absolute before:top-1/2 before:left-1/2 before:w-0 before:h-0 before:rounded-full before:bg-white/20 before:transition-all before:duration-700 before:-translate-x-1/2 before:-translate-y-1/2 hover:before:w-80 hover:before:h-80 animate-glow"
-                                >
-                                    <span id="btn-text" class="flex items-center justify-center space-x-2 sm:space-x-4 relative z-10">
+                                <button type="submit" id="generateBtn"
+                                    class="relative w-full px-6 sm:px-8 py-4 sm:py-5 rounded-2xl text-lg sm:text-xl font-bold text-white transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden bg-gradient-to-r from-primary-red to-soft-gold hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-[0_20px_40px_rgba(142,22,22,0.4),0_0_50px_rgba(142,22,22,0.3)] before:absolute before:top-1/2 before:left-1/2 before:w-0 before:h-0 before:rounded-full before:bg-white/20 before:transition-all before:duration-700 before:-translate-x-1/2 before:-translate-y-1/2 hover:before:w-80 hover:before:h-80 animate-glow">
+                                    <span id="btn-text"
+                                        class="flex items-center justify-center space-x-2 sm:space-x-4 relative z-10">
                                         <i class="fas fa-robot text-xl sm:text-2xl"></i>
                                         <span class="text-sm sm:text-base">Generate Job Description</span>
                                         <i class="fas fa-sparkles text-lg sm:text-xl"></i>
                                     </span>
-                                    <div id="btn-loading" class="hidden flex items-center justify-center space-x-2 sm:space-x-4 relative z-10">
-                                        <div class="w-5 h-5 sm:w-6 sm:h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    <div id="btn-loading"
+                                        class="hidden flex items-center justify-center space-x-2 sm:space-x-4 relative z-10">
+                                        <div
+                                            class="w-5 h-5 sm:w-6 sm:h-6 border-2 border-white/30 border-t-white rounded-full animate-spin">
+                                        </div>
                                         <span class="text-sm sm:text-base">AI is crafting your description...</span>
                                     </div>
                                 </button>
@@ -400,7 +387,8 @@
                 </div>
 
                 <!-- Output Section -->
-                <div class="space-y-8 overflow-y-auto pr-4 h-full" style="scrollbar-width: thin; scrollbar-color: rgba(142, 22, 22, 0.3) transparent;">
+                <div id="right-column" class="space-y-8 overflow-y-auto pr-4 h-full"
+                    style="scrollbar-width: thin; scrollbar-color: rgba(142, 22, 22, 0.3) transparent;">
                     <!-- Loading State -->
                     <div id="loading-state" class="hidden glassmorphism rounded-3xl p-8 text-center">
                         <div class="space-y-6">
@@ -418,33 +406,28 @@
                                 Generated Job Description
                             </h2>
                             <div class="flex space-x-2">
-                                <button 
-                                    id="regenerate-btn"
+                                <button id="regenerate-btn"
                                     class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-all duration-300 transform hover:scale-105"
-                                    title="Regenerate"
-                                >
+                                    title="Regenerate">
                                     <i class="fas fa-redo"></i>
                                 </button>
                             </div>
                         </div>
-                        
-                        <div id="job-description-output" class="bg-light-cream/10 rounded-2xl p-4 sm:p-6 border border-soft-gold/20 min-h-[240px] sm:min-h-[400px] text-gray-800 leading-relaxed break-words text-base sm:text-lg">
+
+                        <div id="job-description-output"
+                            class="bg-light-cream/10 rounded-2xl p-4 sm:p-6 border border-soft-gold/20 min-h-[240px] sm:min-h-[400px] text-gray-800 leading-relaxed break-words text-base sm:text-lg">
                             <!-- Generated content will appear here -->
                         </div>
-                        
+
                         <!-- Action Buttons -->
                         <div class="flex flex-col sm:flex-row gap-4 mt-6">
-                            <button 
-                                id="preview-btn"
-                                class="flex-1 bg-gradient-to-r from-soft-gold to-primary-red px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-white hover:shadow-lg hover:shadow-soft-gold/25 transition-all duration-300 transform hover:scale-105"
-                            >
+                            <button id="preview-btn"
+                                class="flex-1 bg-gradient-to-r from-soft-gold to-primary-red px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-white hover:shadow-lg hover:shadow-soft-gold/25 transition-all duration-300 transform hover:scale-105">
                                 <i class="fas fa-eye mr-2"></i>
                                 Preview PDF
                             </button>
-                            <button 
-                                id="download-btn"
-                                class="flex-1 bg-gradient-to-r from-primary-red to-soft-gold px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-white hover:shadow-lg hover:shadow-primary-red/25 transition-all duration-300 transform hover:scale-105"
-                            >
+                            <button id="download-btn"
+                                class="flex-1 bg-gradient-to-r from-primary-red to-soft-gold px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-sm sm:text-base font-semibold text-white hover:shadow-lg hover:shadow-primary-red/25 transition-all duration-300 transform hover:scale-105">
                                 <i class="fas fa-download mr-2"></i>
                                 Download as PDF
                             </button>
@@ -452,11 +435,11 @@
                     </div>
 
                     <!-- Tips Section -->
-                    <div class="glassmorphism rounded-3xl p-8 slide-up">
-                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                    <div id="tips-section" class="glassmorphism rounded-3xl p-8 slide-up">
+                        <h2 class="text-xl font-bold mb-4 flex items-center">
                             <i class="fas fa-lightbulb text-soft-gold mr-3"></i>
                             Pro Tips
-                        </h3>
+                        </h2>
                         <ul class="space-y-3 text-gray-700">
                             <li class="flex items-start space-x-3">
                                 <i class="fas fa-check text-primary-red mt-1"></i>
@@ -476,6 +459,8 @@
                             </li>
                         </ul>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -483,7 +468,8 @@
 
     <!-- Success Toast -->
     <div id="success-toast" class="fixed top-6 right-6 z-50 hidden">
-        <div class="glassmorphism rounded-2xl p-4 text-white shadow-2xl transform transition-all duration-500 translate-x-full">
+        <div
+            class="glassmorphism rounded-2xl p-4 text-white shadow-2xl transform transition-all duration-500 translate-x-full">
             <div class="flex items-center space-x-3">
                 <i class="fas fa-check-circle text-green-400 text-xl"></i>
                 <span id="toast-message">Action completed successfully!</span>
@@ -492,8 +478,9 @@
     </div>
 
     <!-- PDF Preview Modal -->
-    <div id="pdf-preview-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4">
-            <div class="bg-white rounded-2xl shadow-2xl max-w-full sm:max-w-4xl w-full max-h-[90vh] overflow-hidden">
+    <div id="pdf-preview-modal"
+        class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-full sm:max-w-4xl w-full max-h-[90vh] overflow-hidden">
             <!-- Modal Header -->
             <div class="bg-gradient-to-r from-primary-red to-soft-gold p-6 flex justify-between items-center">
                 <h3 class="text-xl font-bold text-white flex items-center">
@@ -504,43 +491,45 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            
+
             <!-- Modal Body with PDF-style preview -->
-                <div class="p-4 sm:p-6 overflow-y-auto max-h-[calc(90vh-140px)] flex justify-center">
-                    <div id="pdf-preview-content" class="bg-white border-2 border-gray-300 shadow-lg mx-auto" style="width:100%; max-width:210mm; min-height:297mm; padding:20mm; box-sizing:border-box; font-family: 'Helvetica', sans-serif; position: relative;">
-                        <!-- PDF content will be rendered here -->
-                        <div class="absolute inset-2 border border-gray-400"></div> <!-- Inner border -->
-                        <div id="preview-header" class="text-center mb-8"></div>
-                        <div id="preview-body" style="line-height: 1.2;"></div>
-                        <div id="preview-footer" class="absolute bottom-4 left-0 right-0 text-center text-gray-500 text-sm"></div>
+            <div class="p-4 sm:p-6 overflow-y-auto max-h-[calc(90vh-140px)] flex justify-center">
+                <div id="pdf-preview-content" class="bg-white border-2 border-gray-300 shadow-lg mx-auto"
+                    style="width:100%; max-width:210mm; min-height:297mm; padding:20mm; box-sizing:border-box; font-family: 'Helvetica', sans-serif; position: relative;">
+                    <!-- PDF content will be rendered here -->
+                    <div class="absolute inset-2 border border-gray-400"></div> <!-- Inner border -->
+                    <div id="preview-header" class="text-center mb-8"></div>
+                    <div id="preview-body" style="line-height: 1.2;"></div>
+                    <div id="preview-footer" class="absolute bottom-4 left-0 right-0 text-center text-gray-500 text-sm">
                     </div>
                 </div>
-            
+            </div>
+
             <!-- Modal Footer -->
             <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
-                <button id="preview-download" class="bg-gradient-to-r from-primary-red to-soft-gold px-6 py-2 rounded-lg text-white font-semibold hover:shadow-lg transition-all">
+                <button id="preview-download"
+                    class="bg-gradient-to-r from-primary-red to-soft-gold px-6 py-2 rounded-lg text-white font-semibold hover:shadow-lg transition-all">
                     <i class="fas fa-download mr-2"></i>
                     Download PDF
                 </button>
-                <button id="preview-close" class="bg-gray-500 px-6 py-2 rounded-lg text-white font-semibold hover:bg-gray-600 transition-all">
+                <button id="preview-close"
+                    class="bg-gray-500 px-6 py-2 rounded-lg text-white font-semibold hover:bg-gray-600 transition-all">
                     Close
                 </button>
             </div>
         </div>
     </div>
 
-   <div id="footer"></div>
-
-     <script>
-       fetch("{{ url_for('footer') }}")
-       .then(response => response.text())
-       .then(data => {
-         document.getElementById("footer").innerHTML = data;
-       })
-       .catch(err => console.error("Footer load failed:", err));
-    </script>
+    {% include 'footer.html' %}
 
     <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     <script src="{{ url_for('static', filename='js/generator.js') }}"></script>
+    <script>
+        window.addEventListener('load', function () {
+            if (typeof initializeMobileMenu === 'function') initializeMobileMenu();
+        });
+    </script>
 </body>
+
 </html>

@@ -39,6 +39,26 @@ def navbar():
 def footer():
     return render_template("footer.html")
 
+@app.route("/sitemap.xml")
+def sitemap():
+    return render_template("sitemap.xml")
+
+@app.route("/robots.txt")
+def robots():
+    return send_from_directory(app.static_folder, "robots.txt")
+
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
+
+@app.route("/terms")
+def terms():
+    return render_template("terms.html")
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 
 @app.route('/static/<path:filename>')
 def static_files(filename):
@@ -518,7 +538,7 @@ def download_pdf():
         # Section header
         if line.endswith(':') or (len(line) < 60 and line.upper() == line and ' ' in line):
             h = line.rstrip(':')
-            if y < margin + 80:
+            if y < margin + 20:
                 c.showPage(); y = draw_decorations();
             c.setFillColorRGB(0.55, 0.08, 0.08)
             wrapped = simpleSplit(h, 'Helvetica-Bold', header_size, max_width)
@@ -533,7 +553,7 @@ def download_pdf():
         if line.startswith('- '):
             btext = line[2:].strip()
             wrap = simpleSplit(btext, base_font, base_size, max_width - 36)
-            if y < margin + 80:
+            if y < margin + 20:
                 c.showPage(); y = draw_decorations();
             # draw bullet and wrapped lines
             bullet_x = margin + 6
@@ -547,7 +567,7 @@ def download_pdf():
                     first = False
                 else:
                     y -= int(base_size * 1.1)
-                    if y < margin + 80:
+                    if y < margin + 20:
                         c.showPage(); y = draw_decorations();
                     draw_text_line(text_x, y, wline, fontname=base_font, fontsize=base_size, charspace=0.15)
             y -= int(base_size * 1.35)
@@ -556,7 +576,7 @@ def download_pdf():
         # Normal paragraph
         wrapped = simpleSplit(line, base_font, base_size, max_width)
         for wline in wrapped:
-            if y < margin + 80:
+            if y < margin + 20:
                 c.showPage(); y = draw_decorations();
             draw_text_line(margin, y, wline, fontname=base_font, fontsize=base_size, charspace=0.1)
             y -= leading
